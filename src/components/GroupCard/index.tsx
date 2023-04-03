@@ -1,4 +1,4 @@
-import { Container, UsersIcon, Title } from './style';
+import { Container, UsersIcon, Title } from './styles';
 import { TouchableOpacityProps } from 'react-native/types';
 import React from 'react';
 
@@ -9,7 +9,7 @@ type CardProps = TouchableOpacityProps & {
 const GroupCard = ({ title, ...touchableOpacityPropsRest }: CardProps) => {
   return (
     <Container {...touchableOpacityPropsRest}>
-      <UsersIcon weight='fill' />
+      <UsersIcon />
       <Title>{title}</Title>
     </Container>
   );
