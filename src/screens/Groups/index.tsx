@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { FlatList } from 'react-native';
 
@@ -11,16 +11,29 @@ import ListEmpty from '@components/ListEmpty';
 import Button from '@components/Button';
 
 import { Container } from './styles';
-
+import { groupsGetAll } from '@storage/group/groupsGetAll';
 
 const Groups = () => {
   const [groups, setGroups] = useState<Array<string>>([]);
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const handleNewGroup = () => {
     navigation.navigate('new');
   };
+
+  const fetchGroups = async () => {
+    try {
+      const data = await groupsGetAll();
+      setGroups(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchGroups()
+  }, [])
 
   return (
     <Container>
