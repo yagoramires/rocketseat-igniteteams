@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Alert } from 'react-native';
+import { useState, useRef } from 'react';
+import { Alert, TextInput } from 'react-native';
 
 import Header from '@components/Header';
 import Highlight from '@components/Highlight';
@@ -14,6 +14,8 @@ import { AppError } from '@utils/AppError';
 
 const NewGroup = () => {
   const [group, setGroup] = useState('');
+  
+  const newGroupInputRef = useRef<TextInput>(null);
 
   const navigation = useNavigation();
 
@@ -43,7 +45,11 @@ const NewGroup = () => {
           title='Nova turma'
           subtitle='Crie a turma para adicionar as pessoas'
         />
-        <Input placeholder='Nome da turma' onChangeText={setGroup} />
+        <Input placeholder='Nome da turma' onChangeText={setGroup}
+                  inputRef={newGroupInputRef}
+                  onSubmitEditing={handleNewGroup}
+                  returnKeyType='done'
+        />
         <Button title='Criar' onPress={handleNewGroup} />
       </Content>
     </Container>

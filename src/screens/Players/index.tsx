@@ -111,6 +111,8 @@ const Players = () => {
     ]);
   };
 
+  console.log(players)
+
   useEffect(() => {
     fetchPlayersByTeam();
   }, [team]);
