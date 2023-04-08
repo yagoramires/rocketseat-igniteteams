@@ -22,6 +22,8 @@ ${({ theme }) => css`
   font-family: ${theme.FONT_FAMILY.REGULAR};
   color: ${theme.COLORS.GRAY_200};
 `}
+
+text-transform: capitalize;
 `;
 
 export const UsersIcon = styled(UsersThree).attrs(({ theme }) => ({

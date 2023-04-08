@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Header from '@components/Header';
 import Highlight from '@components/Highlight';
@@ -12,6 +12,7 @@ import Button from '@components/Button';
 
 import { FlatList } from 'react-native';
 import { Container, Form, HeaderList, NumberOfPlayers } from './styles';
+import { groupRemove } from '@storage/group/groupeRemove';
 
 type RouteParams = {
   group: string;
@@ -19,19 +20,18 @@ type RouteParams = {
 
 const Players = () => {
   const [team, setTeam] = useState('Time A');
-  const [players, setPlayers] = useState([
-    'Yago',
-    'Ed',
-    'João Sacana',
-    'Yan',
-    'Ferrato',
-    'Felipe',
-    'Gabriel',
-    'Pablo'
-  ]);
+  const [players, setPlayers] = useState([]);
 
   const route = useRoute();
   const { group } = route.params as RouteParams;
+
+  const navigation = useNavigation()
+
+  const handleRemoveGroup = async (group :string) => {
+   await groupRemove(group)
+
+   navigation.navigate('groups')
+  }
 
   return (
     <Container>
@@ -64,7 +64,7 @@ const Players = () => {
         renderItem={({ item }) => (
           <PlayerCard
             name={item}
-            onRemove={() => console.log('Removeu ' + item)}
+            onRemove={() => console.log('removeu fulano')}
           />
         )}
         ListEmptyComponent={<ListEmpty message='Não há pessoas nesse time' />}
@@ -77,7 +77,8 @@ const Players = () => {
         ]}
       />
 
-      <Button title='Remover turma' type='SECONDARY' />
+      <Button title='Remover turma' type='SECONDARY'             onPress={() => handleRemoveGroup(group)}
+ />
     </Container>
   );
 };
