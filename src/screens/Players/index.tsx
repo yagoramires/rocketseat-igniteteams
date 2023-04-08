@@ -10,6 +10,7 @@ import Filter from '@components/Filter';
 import PlayerCard from '@components/PlayerCard';
 import ListEmpty from '@components/ListEmpty';
 import Button from '@components/Button';
+import Loading from '@components/Loading';
 
 import { Container, Form, HeaderList, NumberOfPlayers } from './styles';
 
@@ -26,6 +27,7 @@ type RouteParams = {
 };
 
 const Players = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [team, setTeam] = useState('Time A');
   const [players, setPlayers] = useState<Array<PlayerStorageDTO>>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
@@ -67,6 +69,7 @@ const Players = () => {
   };
 
   const fetchPlayersByTeam = async () => {
+    setIsLoading(true)
     try {
       const players = await playerGetByGroupAndTeam(group, team);
       setPlayers(players);
@@ -75,7 +78,9 @@ const Players = () => {
       Alert.alert(
         'Pessoas',
         'Não foi possivel carregar as pessoas do time selecionado.'
-      );
+        );
+      } finally {
+      setIsLoading(false)
     }
   };
 
@@ -99,8 +104,8 @@ const Players = () => {
     }
   };
 
-  const handleRemoveGroup = async (group: string) => {
-    Alert.alert('Remover', 'Deseja Remover o grupo?', [
+  const handleRemoveGroup = async () => {
+    Alert.alert('Remover', 'Deseja Remover a turma?', [
       { text: 'Não', style: 'cancel' },
       { text: 'Sim', onPress: () => groupRemove() }
     ]);
@@ -143,6 +148,10 @@ const Players = () => {
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
 
+      {isLoading ? (
+        <Loading/>
+      ) : (
+
       <FlatList
         data={players}
         keyExtractor={(item, index) => String(index)}
@@ -161,11 +170,13 @@ const Players = () => {
           }
         ]}
       />
+      )}
+
 
       <Button
         title='Remover turma'
         type='SECONDARY'
-        onPress={() => handleRemoveGroup(group)}
+        onPress={handleRemoveGroup}
       />
     </Container>
   );
