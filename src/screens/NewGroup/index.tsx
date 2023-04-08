@@ -19,7 +19,7 @@ const NewGroup = () => {
 
   const handleNewGroup = async () => {
     try {
-      if (!group) return;
+      if (group.trim().length === 0) return Alert.alert('Novo Grupo', 'Informe o nome da turma.');
 
       await groupCreate(group);
       navigation.navigate('players', { group });
